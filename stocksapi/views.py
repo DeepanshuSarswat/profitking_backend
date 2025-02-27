@@ -269,13 +269,14 @@ class register(APIView):
         print("test2")
         if(user is not None):
             return Response({'status':HTTP_200_OK,'message':'Username already exists'})
+        
         personalcode = generate_random_unicode()
         mytimecalculator = 0
-        while(len(User1.objects.filter(unicode=personalcode))):
+        while(User1.objects.filter(unicode=personalcode).exists()):
             personalcode = generate_random_unicode()
             mytimecalculator += 1
             if mytimecalculator > 10000:
-                pass 
+                return Response({'status':HTTP_400_BAD_REQUEST,'message':'Unable to generate unique code'})
 
         print("test3")
         status = send_mail(email_r, personalcode)
