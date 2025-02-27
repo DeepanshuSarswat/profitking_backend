@@ -248,7 +248,7 @@ class register(APIView):
         data = request.data
         if data == None:
             return Response({'status':HTTP_400_BAD_REQUEST,'message':'Invalid Request'})
-
+        
         try:
             first_name = data["fname"]
             last_name = data["lname"]
@@ -258,11 +258,15 @@ class register(APIView):
             pan_no = data['panno']
         except:
             return Response({'status':HTTP_400_BAD_REQUEST,'message':'Invalid data.'})
+
+        print("test1")
         
         try:
             user = User1.objects.get(username = username)
         except:
             user = None
+
+        print("test2")
         if(user is not None):
             return Response({'status':HTTP_200_OK,'message':'Username already exists'})
         personalcode = generate_random_unicode()
@@ -273,6 +277,7 @@ class register(APIView):
             if mytimecalculator > 10000:
                 pass 
 
+        print("test3")
         status = send_mail(email_r, personalcode)
 
         print("personalcode",personalcode)
